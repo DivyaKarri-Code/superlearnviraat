@@ -1,0 +1,700 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Everyvlearn — Learn something every day</title>
+<style>
+:root{--blue:#5865e8;--blue-light:#eef0ff;--ink:#1d2433;--muted:#687187;--paper:#f5f6fb;--line:#e5e8f0;--green:#16845b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 system-ui,sans-serif}
+button,input{font:inherit}button{cursor:pointer;border:0}
+.hidden{display:none!important}
+.wrap{max-width:1150px;margin:auto;padding:24px}
+.brand{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:850}
+.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:var(--blue);color:white}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:12px}
+.muted,.tag{color:var(--muted)}
+.tag{font-size:13px}
+.profile{background:white;border:1px solid var(--line);padding:8px 12px;border-radius:30px;font-size:13px;color:var(--muted)}
+.hero,.panel,.card,.auth-card{background:white;border:1px solid var(--line);border-radius:19px;box-shadow:0 10px 30px #1520440a}
+.hero{padding:25px;margin-bottom:20px;background:linear-gradient(120deg,#eceeff,#fff)}
+.eyebrow{color:var(--blue);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px}
+h1{font-size:clamp(27px,4vw,38px);line-height:1.15;margin:8px 0}
+h2{margin:0 0 5px}
+.hero p{color:var(--muted);margin:8px 0}
+.stats{display:flex;gap:25px;flex-wrap:wrap;margin-top:18px}
+.stat strong{display:block;font-size:21px}
+.stat span{font-size:12px;color:var(--muted)}
+.daily-banner{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:17px 20px;border:1px solid #d8ddff;border-radius:17px;background:#f0f2ff;margin-bottom:22px}
+.daily-banner p{margin:4px 0;color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{padding:17px;cursor:pointer;transition:.15s}
+.card:hover{transform:translateY(-2px);border-color:#bbc3ff}
+.icon{font-size:25px;width:46px;height:46px;border-radius:14px;background:var(--blue-light);display:grid;place-items:center}
+.card h3{margin:12px 0 3px}
+.card p{margin:0;color:var(--muted);font-size:13px;min-height:38px}
+.button{padding:10px 15px;border-radius:11px;font-weight:700;background:var(--blue);color:white}
+.button:disabled{opacity:.5;cursor:not-allowed}
+.secondary{background:#eef0f6;color:#424d66}
+.search{padding:10px 13px;border:1px solid var(--line);border-radius:11px;width:min(260px,100%)}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:20px 0 12px}
+.panel{padding:22px}
+.back{background:transparent;color:var(--blue);font-weight:700;padding:0;margin-bottom:15px}
+.course-head{display:flex;align-items:center;gap:13px}
+.course-head .icon{width:55px;height:55px;font-size:29px}
+.course-head h2{margin:0}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:22px 0 17px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.tab{padding:8px 13px;border-radius:10px;background:transparent;color:var(--muted);font-weight:700}
+.tab.active{background:var(--blue-light);color:var(--blue)}
+.lesson{background:#fbfcff;border:1px solid var(--line);border-radius:15px;padding:18px}
+.lesson h3{margin:5px 0 9px}
+.lesson p{color:#4e5870}
+.example{background:var(--blue-light);padding:12px 14px;border-radius:11px;color:#333f8d;margin-top:12px}
+.daily-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:15px}
+.daily-item{border:1px solid var(--line);border-radius:13px;padding:14px}
+.daily-item h4{margin:4px 0}
+.daily-item p{font-size:13px;margin:0}
+.daily-number{font-size:11px;color:var(--blue);font-weight:800;text-transform:uppercase}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
+.question{font-size:18px;font-weight:750;margin:13px 0}
+.answers{display:grid;gap:8px}
+.answer{background:white;border:1px solid var(--line);padding:12px 14px;text-align:left;border-radius:10px}
+.answer:hover{border-color:var(--blue)}
+.correct{background:#e9f8f0!important;border-color:#76c69b!important}
+.wrong{background:#fff0ef!important;border-color:#e9a09a!important}
+.feedback{font-weight:700;margin-top:12px}
+.auth{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 15% 10%,#e7eaff,transparent 35%),var(--paper)}
+.auth-card{width:min(450px,100%);padding:30px}
+.auth-card .brand{margin-bottom:25px}
+.field{display:grid;gap:7px;margin:17px 0}
+.field label{font-weight:700;font-size:13px}
+.field input{padding:12px;border:1px solid var(--line);border-radius:10px;width:100%}
+.tiny{font-size:11px;color:var(--muted);margin-top:15px}
+.progress-row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:12px 0}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#182033;color:white;padding:10px 16px;border-radius:30px}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.wrap{padding:14px}.grid,.daily-grid{grid-template-columns:1fr}.daily-banner,.section-head{align-items:stretch;flex-direction:column}.panel{padding:15px}.profile{display:none}}
+</style>
+</head>
+<body>
+
+<section id="auth" class="auth">
+ <div class="auth-card">
+  <div class="brand"><span class="logo">✦</span> Everyvlearn</div>
+
+  <div id="emailStep">
+   <div class="eyebrow">Your learning starts here</div>
+   <h1>Learn a little. Grow a lot.</h1>
+   <p class="muted">Enter your email first, then your name to open your learning space.</p>
+   <div class="field">
+    <label for="email">Email address</label>
+    <input id="email" type="email" placeholder="you@example.com">
+   </div>
+   <button class="button" id="continueEmail">Continue →</button>
+  </div>
+
+  <div id="nameStep" class="hidden">
+   <div class="eyebrow">Almost ready</div>
+   <h1 id="nameHeading">What is your name?</h1>
+   <p id="emailLabel" class="muted"></p>
+   <div class="field">
+    <label for="name">Your name</label>
+    <input id="name" type="text" maxlength="40" placeholder="Enter your name">
+   </div>
+   <button class="button" id="start">Start learning →</button>
+  </div>
+
+  <p class="tiny">Your name, email and progress are saved in this browser on this device. This demo does not send emails or create an online account.</p>
+ </div>
+</section>
+
+<div id="app" class="hidden">
+<div class="wrap">
+
+<header class="top">
+ <div>
+  <div class="brand"><span class="logo">✦</span> Everyvlearn</div>
+  <div class="tag">A world of things to discover</div>
+ </div>
+ <div id="profile" class="profile"></div>
+</header>
+
+<section id="homeView">
+ <div class="hero">
+  <div class="eyebrow">Welcome to your learning space</div>
+  <h1 id="welcome">Hello!</h1>
+  <p>Choose a subject. Learn seven things today, take a quiz or play a quick challenge.</p>
+  <div class="stats">
+   <div class="stat"><strong id="points">0</strong><span>Points</span></div>
+   <div class="stat"><strong id="quizzes">0</strong><span>Quizzes completed</span></div>
+   <div class="stat"><strong>10</strong><span>Subjects</span></div>
+  </div>
+ </div>
+
+ <div class="daily-banner">
+  <div>
+   <div class="eyebrow">Daily learning mission</div>
+   <h2>7 things in every subject</h2>
+   <p id="dateText">70 little discoveries to explore today.</p>
+  </div>
+  <button class="button" id="dailyButton">Start today's 7 →</button>
+ </div>
+
+ <div class="section-head">
+  <div><h2>Explore subjects</h2><div class="muted">Pick a subject to begin.</div></div>
+  <input id="search" class="search" type="search" placeholder="Search subjects…">
+ </div>
+ <div id="subjectGrid" class="grid"></div>
+</section>
+
+<section id="courseView" class="hidden"></section>
+
+<section id="progressView" class="hidden">
+ <div class="panel">
+  <button class="back" id="progressBack">← Discover</button>
+  <div class="eyebrow">Your learning journey</div>
+  <h2>My progress</h2>
+  <div class="stats">
+   <div class="stat"><strong id="pPoints">0</strong><span>Total points</span></div>
+   <div class="stat"><strong id="pQuizzes">0</strong><span>Quizzes completed</span></div>
+   <div class="stat"><strong id="pSubjects">0</strong><span>Subjects tried</span></div>
+  </div>
+  <div id="progressList" style="margin-top:20px"></div>
+ </div>
+</section>
+
+<div class="actions">
+ <button class="secondary" id="progressButton">My progress</button>
+ <button class="secondary" id="changeUser">Change learner</button>
+</div>
+
+</div>
+</div>
+
+<div id="toast" class="toast hidden" role="status"></div>
+
+<script>
+const subjects = {
+ math:{name:"Maths",icon:"➗",desc:"Numbers, patterns and problem-solving.",facts:[
+ ["Place value","A digit's position tells you its value.","In 4,582, the 5 means five hundreds."],
+ ["Prime numbers","A prime number has exactly two positive factors: 1 and itself.","2, 3, 5, 7 and 11 are prime."],
+ ["Square numbers","A square number is a whole number multiplied by itself.","6 × 6 = 36."],
+ ["Perimeter","Perimeter is the distance around a 2D shape.","A 5 cm by 3 cm rectangle has perimeter 16 cm."],
+ ["Area","Area measures the surface inside a flat shape.","Rectangle area = length × width."],
+ ["Negative numbers","Negative numbers are less than zero.","−3 is smaller than −1."],
+ ["Angles","An angle measures a turn between two lines.","A right angle is 90 degrees."],
+ ["Factors","A factor divides a number exactly.","Factors of 12 include 1, 2, 3, 4, 6 and 12."],
+ ["Multiples","Multiples are made by multiplying a number by whole numbers.","Multiples of 4: 4, 8, 12, 16."],
+ ["Mean average","Add the values and divide by how many values there are.","Mean of 2, 4 and 9 = 15 ÷ 3 = 5."],
+ ["Fractions","A fraction represents part of a whole.","½ means one of two equal parts."],
+ ["Probability","Probability describes how likely something is.","A fair coin has a 1 in 2 chance of heads."]
+ ],quiz:[
+ ["What is ½ + ½?",["½","1","2"],1,"One half plus one half makes one whole."],
+ ["What is 10% of 60?",["6","10","16"],0,"10% is one tenth: 60 ÷ 10 = 6."],
+ ["Which is the largest?",["0.4","0.25","0.5"],2,"0.5 is greater than 0.4 and 0.25."]
+ ]},
+
+ english:{name:"English",icon:"📚",desc:"Build vocabulary, grammar and writing skills.",facts:[
+ ["Synonyms","Synonyms have the same or a similar meaning.","Happy and joyful are synonyms."],
+ ["Antonyms","Antonyms have opposite meanings.","Ancient and modern are antonyms."],
+ ["Adverbs","An adverb often describes how, when or where an action happens.","In 'She ran quickly', quickly is an adverb."],
+ ["Pronouns","A pronoun can take the place of a noun.","Maya is kind. She helps others. 'She' replaces Maya."],
+ ["Apostrophes","An apostrophe can show missing letters or possession.","Don't means do not; the girl's bag shows ownership."],
+ ["Paragraphs","A paragraph groups sentences about one main idea.","Start a new paragraph when the focus changes."],
+ ["Adjectives","Adjectives describe nouns.","A tiny, silver key: tiny and silver are adjectives."],
+ ["Similes","A simile compares things using like or as.","As bright as the sun."],
+ ["Metaphors","A metaphor describes one thing as another.","The classroom was a zoo."],
+ ["Alliteration","Alliteration repeats starting sounds in nearby words.","Peter picked purple plums."],
+ ["Tenses","Verb tense shows when an action happens.","I walk is present; I walked is past."],
+ ["Fact and opinion","A fact can be checked; an opinion is a viewpoint.","Water freezes at 0°C is a fact."]
+ ],quiz:[
+ ["Which word is a verb?",["Quickly","Jump","Blue"],1,"Jump describes an action."],
+ ["Choose the adjective.",["Beautiful","Garden","Walk"],0,"Beautiful describes a noun."],
+ ["Which is a synonym of happy?",["Sad","Joyful","Angry"],1,"Joyful has a similar meaning to happy."]
+ ]},
+
+ chess:{name:"Chess",icon:"♟️",desc:"Learn the pieces, movement and smart tactics.",facts:[
+ ["The chessboard","Chess is played on 64 squares: eight rows and eight columns.","Each side starts with 16 pieces."],
+ ["Control the centre","Central squares give pieces more routes and influence.","The key central squares are e4, d4, e5 and d5."],
+ ["Develop knights","Bring knights towards the centre early.","A knight on f3 controls useful central squares."],
+ ["Develop bishops","Bishops move along diagonals.","A bishop on c4 can look towards f7."],
+ ["Castling","Castling moves the king towards safety and activates a rook.","You cannot castle out of, through or into check."],
+ ["Forks","A fork attacks two or more enemy pieces at once.","Knights are especially good at forks."],
+ ["Pins","A pinned piece cannot move safely if it exposes a valuable piece or king.","A bishop can pin a knight to its king."],
+ ["Pawn promotion","A pawn reaching the last rank is promoted.","A pawn usually becomes a queen."],
+ ["Stalemate","Stalemate is a draw when a player has no legal move but is not in check.","The king is not checked, but no legal move exists."],
+ ["Rook activity","Rooks are powerful on open files.","An open file has no pawns blocking it."],
+ ["Passed pawns","A passed pawn has no opposing pawn able to stop it.","Support a passed pawn as it advances."],
+ ["Think before moving","Check checks, captures and threats before choosing a move.","Ask what your opponent can do next."]
+ ],quiz:[
+ ["Which piece moves in an L-shape?",["Bishop","Knight","Rook"],1,"The knight moves two squares and then one sideways."],
+ ["Which piece moves diagonally?",["Bishop","Rook","King only"],0,"A bishop moves diagonally."],
+ ["Who moves first?",["Black","White","Player with more pieces"],1,"White always moves first."]
+ ]},
+
+ hindi:{name:"Hindi",icon:"नमस्ते",desc:"Learn useful Hindi words and everyday phrases.",facts:[
+ ["नमस्ते — Namaste","नमस्ते is a polite greeting.","नमस्ते! — Hello!"],
+ ["धन्यवाद — Dhanyavaad","धन्यवाद means thank you.","धन्यवाद! — Thank you!"],
+ ["पानी — Paani","पानी means water.","मुझे पानी चाहिए। — I would like water."],
+ ["किताब — Kitaab","किताब means book.","यह मेरी किताब है। — This is my book."],
+ ["घर — Ghar","घर means home or house.","मेरा घर — My home."],
+ ["हाँ — Haan","हाँ means yes.","हाँ, ठीक है। — Yes, it is okay."],
+ ["नहीं — Nahin","नहीं means no or not.","नहीं, धन्यवाद। — No, thank you."],
+ ["कृपया — Kripaya","कृपया is a polite way to say please.","कृपया बैठिए। — Please sit."],
+ ["दोस्त — Dost","दोस्त means friend.","मेरा दोस्त — My friend."],
+ ["आज — Aaj","आज means today.","आज सोमवार है। — Today is Monday."],
+ ["अच्छा — Achchha","अच्छा can mean good, nice or okay.","अच्छा काम! — Good work!"],
+ ["मेरा नाम — Mera naam","मेरा नाम means my name.","मेरा नाम रीना है। — My name is Reena."]
+ ],quiz:[
+ ["What does नमस्ते mean?",["Goodbye","Hello","Water"],1,"Namaste is a common greeting."],
+ ["What does पानी mean?",["Water","Book","Home"],0,"Paani means water."],
+ ["What does धन्यवाद mean?",["Please","Thank you","Good morning"],1,"Dhanyavaad means thank you."]
+ ]},
+
+ portuguese:{name:"Portuguese",icon:"🇵🇹",desc:"Start speaking Portuguese with useful phrases.",facts:[
+ ["Olá","Olá means hello.","Olá! — Hello!"],
+ ["Bom dia","Bom dia means good morning.","Bom dia, Maria! — Good morning, Maria!"],
+ ["Obrigado / Obrigada","Obrigado or obrigada means thank you.","Muito obrigada! — Thank you very much!"],
+ ["Por favor","Por favor means please.","Um café, por favor. — A coffee, please."],
+ ["Água","Água means water.","Quero água. — I want water."],
+ ["Sim and não","Sim means yes and não means no.","Sim, por favor. — Yes, please."],
+ ["Até logo","Até logo means see you later.","Tchau! Até logo! — Bye! See you later!"],
+ ["Boa noite","Boa noite can mean good evening or good night.","Boa noite! — Good evening / good night!"],
+ ["Desculpe","Desculpe is a polite way to say sorry or excuse me.","Desculpe! — Excuse me!"],
+ ["Casa","Casa means house or home.","A minha casa — My home."],
+ ["Amigo / amiga","Amigo means male friend; amiga means female friend.","Ela é minha amiga. — She is my friend."],
+ ["Eu gosto de","Eu gosto de means I like.","Eu gosto de música. — I like music."]
+ ],quiz:[
+ ["What does Olá mean?",["Hello","Please","Goodbye"],0,"Olá means hello."],
+ ["How do you say please?",["Obrigado","Por favor","Bom dia"],1,"Por favor means please."],
+ ["What does Bom dia mean?",["Good night","Good morning","Thank you"],1,"Bom dia means good morning."]
+ ]},
+
+ italian:{name:"Italian",icon:"🇮🇹",desc:"Explore Italian greetings and simple vocabulary.",facts:[
+ ["Ciao","Ciao is an informal hello or goodbye.","Ciao, Luca! — Hi, Luca!"],
+ ["Buongiorno","Buongiorno means good morning or good day.","Buongiorno! — Good morning!"],
+ ["Grazie","Grazie means thank you.","Grazie mille! — Thanks very much!"],
+ ["Per favore","Per favore means please.","Un'acqua, per favore. — A water, please."],
+ ["Acqua","Acqua means water.","Vorrei dell'acqua. — I would like some water."],
+ ["Sì and no","Sì means yes; no means no.","Sì, grazie. — Yes, thank you."],
+ ["Arrivederci","Arrivederci is a polite goodbye.","Arrivederci! — Goodbye!"],
+ ["Buonasera","Buonasera means good evening.","Buonasera a tutti! — Good evening, everyone!"],
+ ["Scusa / scusi","Scusa is informal; scusi is polite for excuse me.","Mi scusi. — Excuse me."],
+ ["Casa","Casa means house or home.","La mia casa — My home."],
+ ["Amico / amica","Amico is a male friend; amica is a female friend.","La mia amica — My friend."],
+ ["Mi piace","Mi piace means I like it.","Mi piace la musica. — I like music."]
+ ],quiz:[
+ ["What does Grazie mean?",["Hello","Thank you","Please"],1,"Grazie means thank you."],
+ ["Which means good morning?",["Buongiorno","Arrivederci","Per favore"],0,"Buongiorno means good morning."],
+ ["What does Sì mean?",["No","Please","Yes"],2,"Sì means yes."]
+ ]},
+
+ spanish:{name:"Spanish",icon:"🇪🇸",desc:"Learn common Spanish words and expressions.",facts:[
+ ["Hola","Hola means hello. The h is silent.","¡Hola! — Hello!"],
+ ["Buenos días","Buenos días means good morning.","¡Buenos días! — Good morning!"],
+ ["Gracias","Gracias means thank you.","Muchas gracias. — Thank you very much."],
+ ["Por favor","Por favor means please.","Un té, por favor. — A tea, please."],
+ ["Agua","Agua means water.","Quiero agua. — I want water."],
+ ["Sí and no","Sí means yes; no means no.","Sí, gracias. — Yes, thank you."],
+ ["Adiós","Adiós means goodbye.","¡Adiós, hasta mañana! — Goodbye, see you tomorrow!"],
+ ["Buenas tardes","Buenas tardes means good afternoon.","Buenas tardes. — Good afternoon."],
+ ["Perdón","Perdón can mean pardon, sorry or excuse me.","Perdón, ¿dónde está...? — Excuse me, where is...?"],
+ ["Casa","Casa means house or home.","Mi casa — My house."],
+ ["Amigo / amiga","Amigo is male friend; amiga is female friend.","Mi amiga Ana — My friend Ana."],
+ ["Me gusta","Me gusta means I like.","Me gusta leer. — I like reading."]
+ ],quiz:[
+ ["What does Hola mean?",["Hello","Thank you","Please"],0,"Hola means hello."],
+ ["How do you say thank you?",["Adiós","Gracias","Agua"],1,"Gracias means thank you."],
+ ["What does agua mean?",["Food","Water","Friend"],1,"Agua means water."]
+ ]},
+
+ music:{name:"Music",icon:"🎵",desc:"Discover rhythm, notes and the building blocks of music.",facts:[
+ ["Beat","The beat is the steady pulse you can tap along to.","Count four steady beats: 1, 2, 3, 4."],
+ ["Rhythm","Rhythm is the pattern of sounds and silences over the beat.","Clap, rest, clap-clap, rest."],
+ ["Melody","A melody is a sequence of notes that forms a tune.","Hum a short tune."],
+ ["Pitch","Pitch tells you how high or low a sound is.","A whistle is usually higher than a bass drum."],
+ ["Tempo","Tempo is the speed of the music.","120 BPM means 120 beats each minute."],
+ ["Dynamics","Dynamics describe how loud or soft music is.","Piano means soft; forte means loud."],
+ ["Timbre","Timbre is the tone colour of a sound.","A flute and violin can play the same note but sound different."],
+ ["Time signature","A time signature shows how beats are grouped in a bar.","4/4 has four quarter-note beats in each bar."],
+ ["Notes A to G","The basic note names are A, B, C, D, E, F and G.","After G comes A again at a different pitch."],
+ ["Rest","A rest is a period of silence in music.","Silence is part of rhythm too."],
+ ["Chord","A chord is different notes played together.","A C major chord uses C, E and G."],
+ ["Scale","A scale is an ordered set of notes.","C major uses C, D, E, F, G, A and B."]
+ ],quiz:[
+ ["What is the steady pulse called?",["Melody","Beat","Volume"],1,"The beat is the steady pulse."],
+ ["How many basic note names are there?",["5","7","12"],1,"The seven note names are A to G."],
+ ["What does rhythm describe?",["Patterns of sounds","Only loud sounds","Instrument size"],0,"Rhythm is patterns of sounds and silences."]
+ ]},
+
+ galician:{name:"Galician",icon:"🌊",desc:"Discover the language of Galicia in north-west Spain.",facts:[
+ ["Ola","Ola means hello in Galician.","Ola! — Hello!"],
+ ["Grazas","Grazas means thank you.","Moitas grazas. — Thank you very much."],
+ ["Bos días","Bos días means good morning.","Bos días! — Good morning!"],
+ ["Por favor","Por favor means please.","Un vaso de auga, por favor. — A glass of water, please."],
+ ["Si and non","Si means yes and non means no.","Si, grazas. — Yes, thank you."],
+ ["Ata logo","Ata logo means see you later.","Ata logo! — See you later!"],
+ ["Auga","Auga means water.","Quero auga. — I want water."],
+ ["Casa","Casa means house or home.","A miña casa — My home."],
+ ["Amigo / amiga","Amigo and amiga mean male friend and female friend.","A miña amiga — My friend."],
+ ["Boas tardes","Boas tardes means good afternoon.","Boas tardes! — Good afternoon!"],
+ ["Como estás?","Como estás? means how are you?","Estou ben, grazas. — I am well, thank you."],
+ ["Libro","Libro means book.","O meu libro — My book."]
+ ],quiz:[
+ ["What does Ola mean?",["Hello","Goodbye","Water"],0,"Ola means hello."],
+ ["How do you say thank you?",["Grazas","Non","Ata logo"],0,"Grazas means thank you."],
+ ["What does Si mean?",["No","Yes","Please"],1,"Si means yes."]
+ ]},
+
+ arabic:{name:"Arabic",icon:"عربي",desc:"Learn Arabic greetings, words and useful phrases.",facts:[
+ ["مرحبا — Marhaban","مرحبا means hello or welcome.","مرحبا! — Hello!"],
+ ["شكرا — Shukran","شكرا means thank you.","شكرا جزيلا — Thank you very much."],
+ ["من فضلك — Min fadlak","من فضلك is a polite way to say please to a man.","من فضلك، ماء — Water, please."],
+ ["ماء — Maa","ماء means water.","أريد ماء — I want water."],
+ ["نعم — Na'am","نعم means yes.","نعم، شكرا — Yes, thank you."],
+ ["لا — La","لا means no or not.","لا، شكرا — No, thank you."],
+ ["مع السلامة — Ma'a as-salama","مع السلامة is a common way to say goodbye.","مع السلامة! — Goodbye!"],
+ ["صباح الخير — Sabah al-khayr","صباح الخير means good morning.","صباح الخير! — Good morning!"],
+ ["مساء الخير — Masa al-khayr","مساء الخير means good evening.","مساء الخير! — Good evening!"],
+ ["بيت — Bayt","بيت means house or home.","بيتي — My house."],
+ ["كتاب — Kitaab","كتاب means book.","هذا كتاب — This is a book."],
+ ["أنا — Ana","أنا means I or me.","أنا بخير — I am fine."]
+ ],quiz:[
+ ["What does مرحبا mean?",["Hello","Water","Goodbye"],0,"Marhaban means hello."],
+ ["What does شكرا mean?",["Please","Thank you","Yes"],1,"Shukran means thank you."],
+ ["Which direction is Arabic written?",["Left to right","Top to bottom","Right to left"],2,"Arabic is normally written from right to left."]
+ ]}
+};
+
+const $=id=>document.getElementById(id);
+let user=null,active=null,currentTab='daily',quizIndex=0,quizAnswered=false,gameIndex=0;
+let progress={points:0,quizzes:0,dailyDone:{},correct:{}};
+
+function progressKey(){return 'everyvlearn-progress-'+(user?.email||'guest')}
+function saveProgress(){localStorage.setItem(progressKey(),JSON.stringify(progress))}
+function loadProgress(){
+ try{progress={...progress,...JSON.parse(localStorage.getItem(progressKey())||'{}')}}catch(e){}
+ progress.dailyDone=progress.dailyDone||{};
+ progress.correct=progress.correct||{};
+}
+function profiles(){
+ try{return JSON.parse(localStorage.getItem('everyvlearn-profiles')||'[]')}
+ catch(e){return []}
+}
+function toast(msg){
+ $('toast').textContent=msg;
+ $('toast').classList.remove('hidden');
+ setTimeout(()=>$('toast').classList.add('hidden'),1800)
+}
+function dateKey(){
+ const d=new Date();
+ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')
+}
+function hash(s){
+ let h=2166136261;
+ for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}
+ return h>>>0
+}
+function todaySeven(id){
+ const arr=subjects[id].facts;
+ let seed=hash(dateKey()+id)||1;
+ const indexes=arr.map((_,i)=>i);
+ for(let i=indexes.length-1;i>0;i--){
+  seed=(Math.imul(seed,1664525)+1013904223)>>>0;
+  const j=seed%(i+1);
+  [indexes[i],indexes[j]]=[indexes[j],indexes[i]]
+ }
+ return indexes.slice(0,7).map(i=>arr[i])
+}
+
+function showAuth(){
+ $('app').classList.add('hidden');
+ $('auth').classList.remove('hidden');
+ $('emailStep').classList.remove('hidden');
+ $('nameStep').classList.add('hidden');
+ $('email').value='';
+ $('name').value='';
+ $('email').focus()
+}
+
+$('continueEmail').onclick=()=>{
+ const email=$('email').value.trim().toLowerCase();
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+  toast('Please enter a valid email address.');
+  return
+ }
+ const saved=profiles().find(p=>p.email===email);
+ sessionStorage.setItem('everyvlearn-current-email',email);
+ $('emailLabel').textContent=email;
+ $('name').value=saved?saved.name:'';
+ $('nameHeading').textContent=saved?'Welcome back!':'What is your name?';
+ $('start').textContent=saved?'Continue learning →':'Start learning →';
+ $('emailStep').classList.add('hidden');
+ $('nameStep').classList.remove('hidden');
+ $('name').focus()
+};
+
+$('email').addEventListener('keydown',e=>{
+ if(e.key==='Enter')$('continueEmail').click()
+});
+$('name').addEventListener('keydown',e=>{
+ if(e.key==='Enter')$('start').click()
+});
+
+$('start').onclick=()=>{
+ const name=$('name').value.trim();
+ const email=sessionStorage.getItem('everyvlearn-current-email')||'';
+ if(!email){toast('Enter your email first.');return}
+ if(!name){toast('Please enter your name.');return}
+ user={name,email};
+ const list=profiles(),i=list.findIndex(p=>p.email===email);
+ if(i>=0)list[i]={name,email};
+ else list.push({name,email});
+ localStorage.setItem('everyvlearn-profiles',JSON.stringify(list));
+ localStorage.setItem('everyvlearn-user',JSON.stringify(user));
+ loadProgress();
+ openApp()
+};
+
+function openApp(){
+ $('auth').classList.add('hidden');
+ $('app').classList.remove('hidden');
+ $('welcome').textContent='Hello, '+user.name+'!';
+ $('profile').textContent=user.name+' · '+user.email;
+ $('dateText').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'})+' · 7 things in each of 10 subjects.';
+ renderStats();
+ renderSubjects()
+}
+function renderStats(){
+ $('points').textContent=progress.points||0;
+ $('quizzes').textContent=progress.quizzes||0
+}
+function renderSubjects(filter=''){
+ $('subjectGrid').innerHTML='';
+ Object.entries(subjects)
+ .filter(([id,s])=>(s.name+' '+s.desc).toLowerCase().includes(filter.toLowerCase()))
+ .forEach(([id,s])=>{
+  const el=document.createElement('article');
+  el.className='card';
+  el.innerHTML=`<div class="icon">${s.icon}</div><h3>${s.name}</h3><p>${s.desc}</p><div class="muted" style="font-size:12px;margin-top:12px">7 things today · Open →</div>`;
+  el.onclick=()=>openCourse(id);
+  $('subjectGrid').appendChild(el)
+ });
+ if(!$('subjectGrid').children.length)$('subjectGrid').textContent='No subjects found.'
+}
+$('search').addEventListener('input',e=>renderSubjects(e.target.value));
+$('dailyButton').onclick=()=>openCourse('math');
+$('progressButton').onclick=showProgress;
+$('progressBack').onclick=()=>showHome();
+$('changeUser').onclick=()=>{
+ localStorage.removeItem('everyvlearn-user');
+ user=null;
+ showAuth()
+};
+
+function showHome(){
+ $('homeView').classList.remove('hidden');
+ $('courseView').classList.add('hidden');
+ $('progressView').classList.add('hidden')
+}
+function showProgress(){
+ $('homeView').classList.add('hidden');
+ $('courseView').classList.add('hidden');
+ $('progressView').classList.remove('hidden');
+ $('pPoints').textContent=progress.points||0;
+ $('pQuizzes').textContent=progress.quizzes||0;
+ $('pSubjects').textContent=Object.keys(progress.correct).filter(k=>progress.correct[k].length).length;
+ $('progressList').innerHTML='<h3>Subject activity</h3>'+
+ Object.entries(subjects).map(([id,s])=>
+ `<div class="progress-row"><span>${s.icon} ${s.name}</span><strong>${(progress.correct[id]||[]).length}/3 correct quiz answers</strong></div>`
+ ).join('')
+}
+
+function openCourse(id){
+ active=id;
+ currentTab='daily';
+ quizIndex=0;
+ quizAnswered=false;
+ gameIndex=Math.floor(Math.random()*subjects[id].quiz.length);
+ renderCourse()
+}
+function renderCourse(){
+ const s=subjects[active];
+ $('homeView').classList.add('hidden');
+ $('progressView').classList.add('hidden');
+ $('courseView').classList.remove('hidden');
+ $('courseView').innerHTML=`
+ <div class="panel">
+  <button class="back" id="back">← All subjects</button>
+  <div class="course-head">
+   <div class="icon">${s.icon}</div>
+   <div><h2>${s.name}</h2><div class="muted">${s.desc}</div></div>
+  </div>
+  <div class="tabs">
+   <button class="tab ${currentTab==='daily'?'active':''}" data-tab="daily">☀️ Daily 7</button>
+   <button class="tab ${currentTab==='learn'?'active':''}" data-tab="learn">📖 Learn</button>
+   <button class="tab ${currentTab==='quiz'?'active':''}" data-tab="quiz">✍️ Quiz</button>
+   <button class="tab ${currentTab==='game'?'active':''}" data-tab="game">🎮 Game</button>
+  </div>
+  <div id="content"></div>
+ </div>`;
+ $('back').onclick=showHome;
+ document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{
+  currentTab=b.dataset.tab;
+  renderCourse()
+ });
+ if(currentTab==='daily')renderDaily();
+ if(currentTab==='learn')renderLearn();
+ if(currentTab==='quiz')renderQuiz();
+ if(currentTab==='game')renderGame()
+}
+
+function dailyId(){return dateKey()+':'+active}
+function renderDaily(){
+ const s=subjects[active],items=todaySeven(active),done=!!progress.dailyDone[dailyId()];
+ $('content').innerHTML=`
+ <div class="lesson">
+  <div class="eyebrow">Daily learning · ${new Date().toLocaleDateString()}</div>
+  <h3>Today's 7 things in ${s.name}</h3>
+  <p>Read these seven bite-sized discoveries. The set changes when the date changes.</p>
+  <div class="daily-grid">
+   ${items.map((f,i)=>`
+    <article class="daily-item">
+     <div class="daily-number">Thing ${i+1} of 7</div>
+     <h4>${f[0]}</h4>
+     <p>${f[1]}</p>
+     <div class="example">${f[2]}</div>
+    </article>`).join('')}
+  </div>
+  <div class="actions">
+   <button id="markDaily" class="button" ${done?'disabled':''}>${done?'✓ Completed today':'Mark complete · +20 points'}</button>
+   <button id="dailyHome" class="button secondary">Back to subjects</button>
+  </div>
+ </div>`;
+ $('markDaily').onclick=()=>{
+  if(progress.dailyDone[dailyId()])return;
+  progress.dailyDone[dailyId()]=true;
+  progress.points=(progress.points||0)+20;
+  saveProgress();
+  renderStats();
+  renderDaily();
+  toast('Daily 7 completed! +20 points.')
+ };
+ $('dailyHome').onclick=showHome
+}
+
+function renderLearn(){
+ const s=subjects[active],f=s.facts.slice(0,4);
+ $('content').innerHTML=`
+ <div class="lesson">
+  <div class="eyebrow">Quick lesson</div>
+  <h3>Learn the basics of ${s.name}</h3>
+  ${f.map((x,i)=>`
+   <div style="padding:12px 0;border-bottom:1px solid var(--line)">
+    <strong>${i+1}. ${x[0]}</strong>
+    <p>${x[1]}</p>
+    <div class="example">${x[2]}</div>
+   </div>`).join('')}
+ </div>`
+}
+
+function renderQuiz(){
+ const s=subjects[active],q=s.quiz[quizIndex];
+ $('content').innerHTML=`
+ <div class="lesson">
+  <div class="eyebrow">Question ${quizIndex+1} of ${s.quiz.length}</div>
+  <div class="question">${q[0]}</div>
+  <div class="answers">
+   ${q[1].map((a,i)=>`<button class="answer" data-answer="${i}">${String.fromCharCode(65+i)}. ${a}</button>`).join('')}
+  </div>
+  <div id="feedback" class="feedback"></div>
+  <div class="actions">
+   <button id="nextQuestion" class="button hidden">${quizIndex===s.quiz.length-1?'Finish quiz':'Next question →'}</button>
+  </div>
+ </div>`;
+ document.querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{
+  if(quizAnswered)return;
+  quizAnswered=true;
+  const good=Number(b.dataset.answer)===q[2];
+  document.querySelectorAll('[data-answer]').forEach(x=>{
+   x.disabled=true;
+   if(Number(x.dataset.answer)===q[2])x.classList.add('correct')
+  });
+  if(!good)b.classList.add('wrong');
+  $('feedback').textContent=(good?'Correct! +10 points. ':'Not quite. ')+q[3];
+  $('feedback').style.color=good?'var(--green)':'#bd514b';
+  if(good){
+   progress.points+=10;
+   progress.correct[active]=[...new Set([...(progress.correct[active]||[]),quizIndex])]
+  }
+  $('nextQuestion').classList.remove('hidden');
+  saveProgress();
+  renderStats()
+ });
+ $('nextQuestion').onclick=()=>{
+  if(quizIndex<s.quiz.length-1){
+   quizIndex++;
+   quizAnswered=false;
+   renderQuiz()
+  }else{
+   progress.quizzes=(progress.quizzes||0)+1;
+   saveProgress();
+   renderStats();
+   toast('Quiz completed!');
+   currentTab='game';
+   renderCourse()
+  }
+ }
+}
+
+function renderGame(){
+ const s=subjects[active],q=s.quiz[gameIndex];
+ $('content').innerHTML=`
+ <div class="lesson">
+  <div class="eyebrow">Quick game · +5 points</div>
+  <h3>Quick-fire challenge</h3>
+  <p class="muted">Choose the right answer. Try another question when you finish.</p>
+  <div class="question">${q[0]}</div>
+  <div class="answers">
+   ${q[1].map((a,i)=>`<button class="answer" data-game="${i}">${a}</button>`).join('')}
+  </div>
+  <div id="gameFeedback" class="feedback"></div>
+  <div class="actions"><button id="again" class="button hidden">Play again →</button></div>
+ </div>`;
+ document.querySelectorAll('[data-game]').forEach(b=>b.onclick=()=>{
+  if(b.disabled)return;
+  const good=Number(b.dataset.game)===q[2];
+  document.querySelectorAll('[data-game]').forEach(x=>{
+   x.disabled=true;
+   if(Number(x.dataset.game)===q[2])x.classList.add('correct')
+  });
+  if(!good)b.classList.add('wrong');
+  $('gameFeedback').textContent=good?'Great answer! +5 points.':q[3];
+  if(good){
+   progress.points+=5;
+   saveProgress();
+   renderStats()
+  }
+  $('again').classList.remove('hidden')
+ });
+ $('again').onclick=()=>{
+  gameIndex=(gameIndex+1+Math.floor(Math.random()*(s.quiz.length-1)))%s.quiz.length;
+  renderGame()
+ }
+}
+
+function startApp(){
+ let saved=null;
+ try{saved=JSON.parse(localStorage.getItem('everyvlearn-user')||'null')}catch(e){}
+ if(saved&&saved.email&&saved.name){
+  user=saved;
+  loadProgress();
+  openApp()
+ }else showAuth()
+}
+startApp();
+</script>
+</body>
+</html>
